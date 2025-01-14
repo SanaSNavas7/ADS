@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <conio.h>
-#include <stdlib.h>
 #define MAX 20
-int adj[MAX][MAX] = {0}, par[MAX] = {0}, i, j, u, v, cost = 0, e = 0, min = 999;
+int adj[MAX][MAX] = {0}, par[MAX] = {0}, u, v, i, j, min = 999, cost = 0, e = 0;
 int find(int x)
 {
-    while (par[x] != x)
+    if (x != par[x])
     {
         x = par[x];
     }
@@ -13,10 +12,11 @@ int find(int x)
 }
 int uni(int x, int y)
 {
-    u = find(x);
-    v = find(y);
-    if(find(u)!=find(v)){
-    par[u] = v;
+    int u = find(x);
+    int v = find(y);
+    if (find(x) != find(y))
+    {
+        par[u] = v;
     }
 }
 void main()
@@ -24,26 +24,22 @@ void main()
     int n;
     printf("enter no of vertices: ");
     scanf("%d", &n);
-    printf("enter adj matrix:");
-    if (n < MAX)
+    if(n<MAX){
+    printf("adj matrix: ");
+    for (i = 0; i < n; i++)
     {
-        for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
         {
-          
-            for (j = 0; j < n; j++)
-            {
-                
-                scanf("%d", &adj[i][j]);
-            }
+            scanf("%d", &adj[i][j]);
         }
-    }
+    }}
     for (i = 0; i < n; i++)
     {
         par[i] = i;
     }
     while (e < n - 1)
     {
-        min = 999;
+        min=999;
         for (i = 0; i < n; i++)
         {
             for (j = 0; j < n; j++)
@@ -56,15 +52,15 @@ void main()
                 }
             }
         }
-        if (par[u] != par[v])
+        if (find(u) != find(v))
         {
             uni(u, v);
-            e += 1;
             cost += min;
-            printf("Edge {%d-%d=%d}",u,v,min);
+            e += 1;
+            printf("edges {%d-%d}={%d}", u, v, min);
         }
         adj[u][v]=999;
         adj[v][u]=999;
     }
-    printf("Total cost is %d",cost);
+    printf("cost is %d",cost);
 }
